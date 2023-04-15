@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 '''
-prints the State object with the name passed as argument
+lists all State objects that contain the letter a
 '''
 
 
@@ -16,6 +16,8 @@ if __name__ == '__main__':
     InstanceSession = sessionmaker(bind=engine)
     session = InstanceSession()
 
-    state = session.query(State).filter(State.name == argv[4]).first()
-    print('Not found' if not state else state.id)
+    states = session.query(State).filter(
+        State.name.contains('a')).order_by(State.id).all()
+    for state in states:
+        print('{}: {}'.format(state.id, state.name))
     session.close()
